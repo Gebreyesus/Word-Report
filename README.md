@@ -1,12 +1,25 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
-
 ### What is this repository for? ###
+## WordCounter##
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+# Background#
+**This App is being built to count number of distinct words in a text.
+It will allow a user to enter the name of a document containing a words,
+to which it will print .text file containing report of words stats
+
+
+Beteab Gebru
+Compilers I
+
+
+List Of files
+-SDD.docx
+-README.md
+
+
+##### File Update History
+Created 9/17/2018 - Beteab Gebru
 
 ### How do I get set up? ###
 
@@ -23,7 +36,8 @@ This README would normally document whatever steps are necessary to get your app
 * Code review
 * Other guidelines
 
-### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+
+* Repo owner or admin Beteab 
+
+
