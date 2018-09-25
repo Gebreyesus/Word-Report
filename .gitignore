@@ -1,5 +1,8 @@
-#Data from Windows
-.DS_Store
+#Data from MacOs to be ignored
+*.DS_Store
 
-#Local Intellij files
-.idea
+#Local Intellij files being ignored
+*.idea
+#ignore class file
+*.class
+!bin/
