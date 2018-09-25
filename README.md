@@ -16,6 +16,8 @@ Compilers I
 List Of files
 -SDD.docx
 -README.md
+-Gebru_wordCounter.java
+
 
 
 ##### File Update History
@@ -32,12 +34,7 @@ Created 9/17/2018 - Beteab Gebru
 
 ### Contribution guidelines ###
 
-* Writing tests
-* Code review
-* Other guidelines
 
-
-
-* Repo owner or admin Beteab 
+* Repo owner : Beteab G. Gebru
 
 
