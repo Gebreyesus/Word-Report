@@ -1,0 +1,70 @@
+
+TeX Live - Quick install
+
+If you don't want to bother reading the full install documentation and just want to install everything in TeX Live, on a Unix-like system, a minimal recipe follows.
+
+    Special considerations for Windows are described separately.
+    For MacOSX, we recommend installing MacTeX, which contains all of TeX Live (and a few Mac-specific additions).
+    Cygwin users can follow the instructions for Unix-like systems, but make sure you have the Cygwin prerequisites before beginning the installation. 
+
+Pre-install: download, cleanup
+
+A separate page describes various ways to acquire the software. It boils down to either getting the DVD from a TeX user group (ideally by becoming a member), or downloading in various ways. Except on Windows, your system must provide a standard Perl installation with the usual core modules. (For Windows, TeX Live comes with its own Perl.)
+
+If you're re-installing after a previous attempt, be sure to completely remove your failed installation. By default, this would be in these two directories (on Unix-like systems):
+
+rm -rf /usr/local/texlive/2018
+rm -rf ~/.texlive2018
+
+Running the installer
+
+You do not need to be root (administrator on Windows) to install, use, or manage TeX Live. Indeed, we recommend installing it as a normal user, except perhaps on MacOSX, where it's conventional to install as administrator. (Some information about shared installations.) Of course, you need to have permission to write into the destination directory, but TeX Live itself does not care if you are root or not.
+
+So, once you have the software, run the install-tl script to install (on Windows, install-tl-windows), like this:
+
+cd /your/download/directory
+./install-tl  # install-tl-windows on Windows
+[... messages omitted ...]
+Enter command: i
+[... when done, see below for post-install ...]
+
+To change the installation directories or other options, read the prompts and instructions. The default is to install into parallel directories named by the release year, so that any given release can be run independently, merely by adjusting the search path.
+Interfaces to the installer: text, GUI, batch
+
+The installer supports text, graphical, and batch interfaces:
+
+    install-tl -gui text uses a plain text interface (command line) mode. This is the default on Unix-like systems.
+    install-tl -gui wizard uses a maximally simplified GUI installation asking only the minimal questions. This is the default on Windows.
+    install-tl -gui perltk uses an advanced/expert GUI installation with many options; requires Perl/Tk. On Windows, you can also invoke this as install-tl-advanced.bat.
+    install-tl --profile=profile does a batch (unattended) installation. To create such a profile file, it's easiest to start with the tlpkg/texlive.profile file which the installer writes at the end of any successful installation. 
+
+For information on all of the installer options, run install-tl --help, or see the install-tl documentation page.
+Choosing a download host
+
+It can take an hour or more to copy all the files, depending on the installation method. If you are downloading over the network, by default a nearby CTAN mirror is automatically chosen. If you have problems, it is good to choose a specific mirror and then run install-tl --location http://mirror.example.org/ctan/path/systems/texlive/tlnet instead of relying on the automatic redirection.
+Post-install: setting PATH
+
+After the installation finishes, you must add the directory of TeX Live binaries to your PATH—except on Windows, where the installer takes care of this. For example:
+  PATH=/usr/local/texlive/2018/bin/x86_64-linux:$PATH
+Use the syntax for your shell, your installation directory, and your binary platform name instead of x86_64-linux.
+
+If you have multiple TeX installations on a given machine, you need to change the search path to switch between them. (Except on MacOSX.)
+Post-install: setting the default paper size
+
+The default is to configure the programs for the A4 paper size. To make the default be 8.5x11 letter-size paper, you can use the ‘o’ menu option before i(nstalling), or run tlmgr paper letter after installation (and after setting your PATH).
+Testing
+
+After a successful installation, please try processing simple test documents, such as latex small2e.
+
+If you're looking for a front-end with which to edit files: TeX Live installs TeXworks on Windows, and MacTeX installs TeXShop. In any case, a plethora of dedicated TeX editors are available. Furthermore, any plain text editor will work.
+Getting updates
+
+If you want to update packages from CTAN after installation, see these examples of using tlmgr. This is not required, or even necessarily recommended; it's up to you to decide if it makes sense in your particular situation.
+
+Typically the main binaries are not updated in TeX Live between major releases. If you want to get updates for LuaTeX and other packages and programs that aren't officially released yet, they may be available in TLContrib, or you may need to compile the sources yourself.
+Reporting problems
+
+Please see the known issues page for bug reporting info. And please check the documentation.
+$Date: 2018/09/18 21:53:38 $; TeX Live;
+TUG home page; contact webmaster; facebook, twitter;  
+(via DuckDuckGo)
