@@ -1,82 +1,67 @@
-
-package gebru.project1;
-
+package words;
+import java.util.*; //INCLUDING ALL LIBRARIES UNDER 
+import java.io.*;
 /**
 * @ Author: Beteab G. Gebru
 * Class: Compilers I
 * Project title: Word analysis on a word file
 */
-import java.util.*; //INCLUDING ALL LIBRARIES UNDER 
-import java.io.*; 
-import java.io.Console;
-import  java.util.Arrays;
-import java.io.IOException;
 
-public class Gebru_wordCounter 
+public class Words 
 {
-	
-	//will store a mapping of word to its count in text
-	public static Map<String, Integer> wordMap = new HashMap<String, Integer>();
-	
-	
-	
-	static void wordAnalyser(File file)
-	{
-		
-	}
-		
-	
-	
-	
-	
-	
-	
-	
-	
-	
-    /**
-     *
-	 * @param args- the command line argument provided by user(the name of the file to be analysed
-     */
-	
-	public static void main(String[] args)
-	 {
-      string file = args[0] + "";
-      File a = new File(file);
-      //Scanner in = new Scanner(a);
+    
+    public static void main(String[] args) throws FileNotFoundException 
+    {
+        HashMap wordMap = new HashMap();  // Map of word --> # of occurrences
 
-      wholeFile(a);  
-	  }
+        //scanner object is instantiated with name Cursor
+        Scanner Cursor = new Scanner(new File("Sample.txt")); //file is opened to be read
+        
+        //keep reading until cursor has reached end of document
+        while (Cursor.hasNext()) 
+        {
+            String Word = Cursor.next();
+
+            if(wordMap.containsKey(Word)) 
+             {
+                // if word instance exists --> increment the number of appearances +1
+                Integer count = (Integer)wordMap.get(Word);
+                wordMap.put(Word, new Integer(count.intValue() + 1));
+             } 
+            else 
+             {
+                // we haven't seen this word, so add it with count of 1
+                wordMap.put(Word, new Integer(1));
+             }
+        }
+
+        // now print out every word in the book, along with its count,
+        // in alphabetical order
+        ArrayList arraylist = new ArrayList(wordMap.keySet());
+        Collections.sort(arraylist);
+
+        for (int i = 0; i < arraylist.size(); i++) 
+        {
+          String key = (String)arraylist.get(i);
+          Integer count = (Integer)wordMap.get(key);
+          System.out.println(key + " --> " + count);
+        }
+
+    }
+     
+     
+     
+    static void wordAnalyser(File file)
+    {
+
+    }
+    
+    static void buildWordMap(String anotherWord)
+    {
+
+    }    
+	
+ 
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-    public static void main()//String[] fileName)
-	{
-		string fileName ;
-		System.out.println("Enter name of file");
-		fileName = System.in
-		File file = new File("sample.txt");
-		
-		
-		try(Scanner sc = new Scanner(new FileInputStream(file)))
-		{
-    			int count=0;
-    			while(sc.hasNext())
-			{
-        			sc.next();
-        			count++;
-			}
-	 	   System.out.println("Number of words: " + count);
-       	}
-    }   
 }
+
