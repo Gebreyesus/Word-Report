@@ -8,13 +8,24 @@ import java.io.*;
 */
 public class Words 
 {
+    
+    
     public static void main(String[] args) throws FileNotFoundException 
     {
+        //File inputText = new File(args[0]); 
+        //String fileName = args[0];
+        Scanner Cursor = new Scanner(new FileInputStream(args[0]));//new File(fileName)); 
+       
+//        if(inputText.exists() && inputText.isFile() &&  inputText.canRead())
+//        {
+//         //scanner object is instantiated with name Cursor
+//         Cursor =  inputText; //file is opened to be read
+//         //Cursor.useDelimiter(", *");
+//        }
+       // else return ;
         HashMap wordMap = new HashMap();  // Map of word --> # of occurrences
-
-        //scanner object is instantiated with name Cursor
-        Scanner Cursor = new Scanner(new File("Sample.txt")); //file is opened to be read
-
+        int totNumofWords = 0;
+        
         while (Cursor.hasNext()) //keep reading until cursor has reached end of document
         {
             String Word = Cursor.next();//capturing the next word in text
@@ -26,7 +37,7 @@ public class Words
              } 
             else//New word at last -> add to the Map and make occurence=1  
                 wordMap.put(Word, new Integer(1));
-            
+            totNumofWords++;
         }
         // now print out every word in the book, along with its count,
         // in alphabetical order
@@ -39,16 +50,10 @@ public class Words
           Integer count = (Integer)wordMap.get(key);
           System.out.println(key + " --> " + count);
         }
+        System.out.println(" Total number of words on the text are --> " + totNumofWords );
     }
 
-    static void wordAnalyser(File file)
-    {
-
-    }
-
-    static void buildWordMap(String anotherWord)
-    {
-
-    }     
+    
+ 
 }
 
