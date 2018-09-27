@@ -9,23 +9,36 @@ import java.io.*;
 public class Words 
 {
     
-    
+    /**
+    *@ param Words : takes in the hashmap of words and number of showing in the text
+    *
+    */
+     static void printer(HashMap Words)
+      {
+        //putting the words into an arraylist to make it suitable for sorting
+        ArrayList listOfWords = new ArrayList(Words.keySet());
+        ///and having it sorted alphabetically 
+        Collections.sort(listOfWords);
+        
+        for (int i = 0; i < listOfWords.size(); i++) 
+        {
+              String key = (String)listOfWords.get(i);
+              Integer count = (Integer)Words.get(key);
+              System.out.println(key + " --> " + count);
+        }
+      }  
+    /**
+    *@ param args -command line argument which would be the name of the document to be ream
+    *
+    *Here lies the main program
+    */
     public static void main(String[] args) throws FileNotFoundException 
     {
-        //File inputText = new File(args[0]); 
-        //String fileName = args[0];
-        Scanner Cursor = new Scanner(new FileInputStream(args[0]));//new File(fileName)); 
-       
-//        if(inputText.exists() && inputText.isFile() &&  inputText.canRead())
-//        {
-//         //scanner object is instantiated with name Cursor
-//         Cursor =  inputText; //file is opened to be read
-//         //Cursor.useDelimiter(", *");
-//        }
-       // else return ;
         HashMap wordMap = new HashMap();  // Map of word --> # of occurrences
-        int totNumofWords = 0;
-        
+        int totNumofWords = 0;//counts total num of words
+        //scanner object is instantiated with name Cursor
+        Scanner Cursor = new Scanner(new File("Sample.txt")); //file(Sample.txt) is opened to be read
+
         while (Cursor.hasNext()) //keep reading until cursor has reached end of document
         {
             String Word = Cursor.next();//capturing the next word in text
@@ -37,23 +50,13 @@ public class Words
              } 
             else//New word at last -> add to the Map and make occurence=1  
                 wordMap.put(Word, new Integer(1));
-            totNumofWords++;
+        totNumofWords++;            
         }
-        // now print out every word in the book, along with its count,
-        // in alphabetical order
-        ArrayList arraylist = new ArrayList(wordMap.keySet());
-        Collections.sort(arraylist);
-
-        for (int i = 0; i < arraylist.size(); i++) 
-        {
-          String key = (String)arraylist.get(i);
-          Integer count = (Integer)wordMap.get(key);
-          System.out.println(key + " --> " + count);
-        }
-        System.out.println(" Total number of words on the text are --> " + totNumofWords );
+        //we can call the printer if we wanted to display the words  
+        //printer(wordMap);
+         System.out.println(" Total number of words on the text are --> " + totNumofWords );
     }
-
     
- 
+   
 }
 
