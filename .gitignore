@@ -6,3 +6,6 @@
 #ignore class file
 *.class
 !bin/
+
+#sample .txt file used for testing
+Sample.txt
