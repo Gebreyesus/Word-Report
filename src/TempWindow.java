@@ -7,6 +7,9 @@ package words;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -15,66 +18,57 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import words.MyFrame;
 /**
- *
+ * 
  * @author Beteab Gebru
  */
 public class TempWindow extends JFrame {
     
-    JButton convertButton = new JButton( "Convert");
-    JTextField fahrTemp = new JTextField( 20);
-    JLabel fahrLabel = new JLabel( "Fahrenheit:");
-    JLabel celLabel = new JLabel( "Celcius:");
-    JLabel answer = new JLabel ( "Unknown");
-    
-    JButton fileButton = new JButton( "Which File?");
+    JButton AnalyseButton = new JButton( "Analyse Text");
+    JButton Browse = new JButton( "Browse");
+    JTextField InPutText = new JTextField( 100);
+    JLabel OutputLabel = new JLabel( "Output File Path");
+    JLabel AnalyseBtnLabel = new JLabel( "Click once file is selected:");
+    JLabel FileChoose = new JLabel ( "Selct File");
+   
     
     public TempWindow() {
-        this.setTitle("Temp Application");
-        this.setBounds( 200, 300, 250, 150);
+        this.setTitle("Word Analysis On File");
+        this.setBounds( 600, 400, 650, 450);
         this.getContentPane().setLayout(null);
         this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE);
         
-        this.convertButton.setBounds(10, 80, 100, 30);
-        this.getContentPane().add( convertButton);
-        this.convertButton.addActionListener( new ButtonListener());
+        this.AnalyseButton.setBounds(20,160, 180, 60);
+        this.getContentPane().add( AnalyseButton);
+        this.AnalyseButton.addActionListener( new ButtonListener());
         
-        this.fahrTemp.setBounds( 120, 20, 100, 30);
-        this.getContentPane().add( fahrTemp);
+        this.Browse.setBounds(220, 160, 180, 60);
+        this.getContentPane().add(Browse);
+        this.Browse.addActionListener( new FileButtonListener());
+        
+        this.InPutText.setBounds( 200, 40, 100, 30);
+        this.getContentPane().add( InPutText);
 
-        this.fahrLabel.setBounds(10, 20, 100, 30);
-        this.getContentPane().add( fahrLabel);
+        this.OutputLabel.setBounds(50, 40, 150, 30);
+        this.getContentPane().add( OutputLabel);
 
-        this.celLabel.setBounds(10, 60, 100, 30);
-        this.getContentPane().add( celLabel);
+        this.AnalyseBtnLabel.setBounds(20, 130, 140, 30);
+        this.getContentPane().add( AnalyseBtnLabel);
         
-        this.answer.setBounds(120, 60, 100, 30);
-        this.getContentPane().add( answer);
-        
-        this.fileButton.setBounds(120, 80, 100, 30);
-        this.getContentPane().add(fileButton);
-        this.fileButton.addActionListener( new FileButtonListener());
+        this.FileChoose.setBounds(220, 130, 180, 30);
+        this.getContentPane().add( FileChoose);
         
 
-    }
-    private void theButtonHasBeenPushed() {
-        String text = fahrTemp.getText();
-        double f = 0.0;
-        try {
-            f = Double.parseDouble(text);
-        }
-        catch( Exception e) {
-            
-        }
-        double c = convertF2C( f);
-        String cString = "" + c;
-        this.answer.setText(cString);
         
+
     }
     
-
-    private double convertF2C(double f) {
-        double answer = (f - 32) * 5.0 / 9.0 ;
-        return answer;
+    private void theButtonHasBeenPushed() throws FileNotFoundException 
+    {
+        String[] inputPath = new String[2];
+        inputPath[1] = InPutText.getText();
+        
+        //this.FileChoose.setText(inputPath[1]);
+        //Words.main(inputPath);
     }
     
     private class ButtonListener implements ActionListener {
@@ -85,31 +79,42 @@ public class TempWindow extends JFrame {
         }
     }
     
-    private class FileButtonListener implements ActionListener {
+    private class FileButtonListener implements ActionListener 
+    {
         @Override
-        public void actionPerformed( ActionEvent e) {
+        public void actionPerformed( ActionEvent e)  
+        {
             System.out.println("hit the file button");
             JFileChooser chooser = new JFileChooser();
             chooser.setFileFilter( new FileNameExtensionFilter("TEXT FILES", "txt", "text"));
-            System.out.println("I created the file chooser");
+            //System.out.println("I created the file chooser");
             int chooserSuccess = chooser.showOpenDialog( null);
-            System.out.println("I opended the file chooser, it returned " + chooserSuccess);
+            //System.out.println("I opended the file chooser, it returned " + chooserSuccess);
             if( chooserSuccess == JFileChooser.APPROVE_OPTION) {
                 File chosenFile = chooser.getSelectedFile();
                 // Pass this file to your function
-                System.out.println("You chose the file " + chosenFile.getAbsolutePath());
-                System.out.println("You chose the file " + chosenFile.getName());
+                System.out.println("File path chosen " + chosenFile.getAbsolutePath());
+                System.out.println("FileName " + chosenFile.getName());
+                String[] FileName = new String[2];
+                FileName[0] =  chosenFile.getName();// InPutText.getText();
+                try 
+                {
+                    Words.main(FileName);
+                } 
+                catch (FileNotFoundException ex) 
+                {
+                    Logger.getLogger(TempWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            else {
+            else 
+            {
                 System.out.println("You hit cancel");
             }
         }
     }
 }
 
-
-
-    
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
