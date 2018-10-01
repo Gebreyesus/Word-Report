@@ -4,6 +4,8 @@ import java.io.*;
 import java.awt.*;
 import java.util.regex.Pattern;
 //import java.util.Map.Entry;
+import words.MyFrame;
+import words.TempWindow;
 
 /**
  * the class Words represents a Class file in the system 
@@ -145,9 +147,12 @@ public class Words
         //print to cosole
         //printer(wordMap,listOfWords);
         writeToTextFile(wordMap, listOfWords);
-
-     
-         //System.out.println("--------------END --------------------------");
+        
+        
+        TempWindow tw = new TempWindow();
+        tw.setVisible(true);
+        //System.exit(0);
+        //System.out.println("--------------END --------------------------");
     }
 
 }
