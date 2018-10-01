@@ -1,175 +1,154 @@
-    package words;
-    import java.util.*; //INCLUDING ALL LIBRARIES UNDER ....
-    import java.io.*;
-    
-    
-    /**
-     * the class Words represents a Class file in the system 
-     * @ Author: Beteab G. Gebru
-     * Class: Compilers I
-     * Project title: Word analysis on a word file
-     */
-    public class Words 
-    {
-        //Global functions
-        public static int totNumofWords = 0;//counts total num of words     
+package words;
+import java.util.*; //INCLUDING ALL LIBRARIES UNDER ....
+import java.io.*;
+import java.awt.*;
+import java.util.regex.Pattern;
+//import java.util.Map.Entry;
 
-//--------------------------------------------------------------------------------------------Write output to file
-      //create a text file object which you will write the output to
-//        File output1 = new File("output1.txt");
-//        //check whether the file's name already exists in the current directory
-//        if(output1.exists())
-//        {
-//            System.out.println("File already exists");
-//            System.exit(0);
-//        }
-//        PrintWriter pw = new PrintWriter(output1);
-//        pw.println("The sum is " + sum);
-//        pw.close();
-//--------------------------------------------------------------------------------------------convert to array and return sorted
-        public static ArrayList convertHashMapTOArray(HashMap Words)
-        {  
-            // Placed the Hasmap in an array and having it sorted alphabetically  
-            ArrayList listOfWords = new ArrayList(Words.keySet()); 
-            Collections.sort(listOfWords);
-            return listOfWords;
-        }
-//-------------------------------------------------------------------------------------Write the word report into text file
-        //create a text file to which output will be written
-        public static void writeToTextFile(HashMap wordMap) throws FileNotFoundException
-        {  
-            File output = new File("WordReport.txt");
-            
-            if(output.exists())
-            {//if output filename exists ask before overwriting the file
-             
-             Scanner userInput = new Scanner( System.in );
-             System.out.println("File already exists");
-             System.out.println("press THE number 1 to overwrite the file");
-             String Input = userInput.next();
-             
-             if (!"1".equals(Input))//if user doesn't enter 1
-              {
-                System.out.println("Remove/Rename the file in directory with same name try again");
-                System.exit(0); //exit program
-              }
-                else //green light to overwrite -> overwiting existing file
-                    {
-                        PrintWriter outWriter = new PrintWriter(output); String temp=".. ";
-                        
-//                        for (int x=0;x<wordMap.size();x++) //write sorted array to file
-//                            {
-//                             temp = wordMap.get()   ;
-//                                pw.println(temp + "         count--->"+wordMap.);
-//                            }
-//                        for (HashMap.Entry <String, Integer> entry : wordMap.entrySet()) 
-//                        {
-//                            outWriter.println(entry.getKey() + "\t=>\t" + entry.getValue());
-//                        }
-                        outWriter.close();
-                    }
-            }
-            else 
-            { // create and write to file;
-                PrintWriter outWriter = new PrintWriter(output);
-                outWriter.close();
-            }
-            //outWriter.close();
-            System.exit(0);
-    }
-//------------------------------------------------------------------------------------       
-        //public static ArrayList checkforErrors()
-        //{            
-            //    return Words;
-        //}
-//---------------------------------------------------------------------------------------function to create hash map 
-        /**
-         * 
-         * printer represents a function that outputs the data in the hashmap by formatting it
-         *@ param Words : takes in the hashmap of words to print them out
-         *
-         */
-        public static HashMap createHashMapofWords(File FileName)throws FileNotFoundException 
-        {
-            Scanner Cursor = null;
-            //--->check for filename existence in the directory
-            try 
-            {
-                Cursor = new Scanner(FileName); //file(Sample.txt) is opened to be read        
-            }
-            catch(FileNotFoundException exception)
-            {
-                System.out.println("The file " + FileName.getPath() + " was not found.");
-            }
+/**
+ * the class Words represents a Class file in the system 
+ * @ Author: Beteab G. Gebru
+ * Class: Compilers I
+ * Project title: Word analysis on a word file
+ */
+public class Words 
+{
+//Global functions and variables here  
+    
+//-----------------------------------------------------------get rid of non words using regex delimiters    
+    public static String formatWords(String Word)
+    {            
+        String localWord = Word.toUpperCase();//to avoid case being an issue
         
-            HashMap<String, Integer> wordMap = new HashMap();  // Map of (key)word --> # of occurrences(count)
-
+        if (localWord.matches("[0-99999]+") || localWord.length() <= 1)//ignoring pure numbers
+            localWord="Null";
+        else if (Pattern.matches("[a-zA-Z]+", Word)==false)         
+                localWord="Null";
+        // System.out.println("   Word---"+localWord);     //for debugging
+        return localWord;
+    }
+//-----------------------------------------------------------function to create hash map 
+    /**
+     * 
+     * printer represents a function that outputs the data in the hashmap by formatting it
+     * @param FileName receives name of file to read
+     *@return HashMap  : returns hashmap of all the words in text
+     *@throws FileNotFoundException
+     */
+    public static HashMap createHashMapofWords(File FileName)throws FileNotFoundException
+    {
+        HashMap<String, Integer> wordMap = new HashMap();  // Map of (key)word --> # of occurrences(count)
+        Scanner Cursor = new Scanner(FileName).useDelimiter("[.,:;()?!\"\\s--]+");;
+           
+       if(FileName.canRead())//continues if there is a readable filename
+        {
             while (Cursor.hasNext()) //keep reading until cursor has reached end of document
             {
                 String Word = Cursor.next();//capturing the next word in text
-                if(wordMap.containsKey(Word)) //if this is another instance of the word we have encountered
+                Word=formatWords(Word);//filter out single words;
+                
+                if(Word !="Null" && wordMap.containsKey(Word)) //if this is another instance of the word we have encountered
                 {
                     // if word instance exists --> increment the number of appearances +1
                     Integer count = (Integer)wordMap.get(Word);
                     wordMap.put(Word, new Integer(count.intValue() + 1));
                 } 
-                else//New word at last -> add to the Map and make occurence=1  
-                    wordMap.put(Word, new Integer(1));
-                totNumofWords++;            
+                else  
+                    //if (Word !=" Null")
+                    wordMap.put(Word, new Integer(1));//New word at last -> add to the Map and make occurence=1            
             }
             Cursor.close();//closing file 
-
-            return wordMap;
         }
-//--------------------------------------------------------------------------------------------Printer function
-        /**
-         * 
-         * printer represents a function that formats and outputs the data in the hashmap 
-         *@ param Words : takes in the hashmap of words to print them out
-         *
-         */
-         static void printer(HashMap Words)
-        {
-            //putting the words into an arraylist and sorting them
-            ArrayList listOfWords = new ArrayList(Words.keySet());
-            Collections.sort(listOfWords);//and having it sorted alphabetically 
-            
-            for (int i = 0; i < listOfWords.size(); i++) 
-            {
-                String key = (String)listOfWords.get(i);
-                Integer count = (Integer)Words.get(key);
-                System.out.println(key + " --> " + count);
-            }
-        }  
-//------------------------------------------------------------------------------------------------------------MAIN()         
-        /**
-        *@ param args -command line argument which would be the name of the document to be ream
-        *
-        *Here lies the main program
-        */
-        public static void main(String[] args) throws FileNotFoundException 
-        {
-            File Filename = new File("Sample.txt");//(args[0]);
-            
-            //send the filename to the hasmap function
-            HashMap wordMap = createHashMapofWords(Filename);
-            writeToTextFile(wordMap);
-
-    //        for (int arrayListIndex=0; arrayListIndex<listOfWords.size();arrayListIndex++)
-    //        {
-    //            listOfWords[arrayListIndex];
-    //            for (int wordNum = 0; wordNum < wordMap.size(); wordNum++)
-    //            {
-    //                String word = wordMap.get(listOfWords[arrayListIndex].);
-    //                word = word.replaceAll("[.,:;()?!\" \t\n\r\']+", "");
-    //                lettersPerWord[wordNum] = word.length();
-    //                totalLetters = word.length();
-    //            }
-    //        }
-             //we can call the printer if we wanted to display the words  
-             printer(wordMap);
-             System.out.println(" Total number of words on the text are --> " + totNumofWords );
-        }
-
+        Cursor.close();
+        return wordMap;
     }
+//---------------------------------------------------------Write the word report into text file
+    //create a text file to which output will be written
+    public static void writeToTextFile(HashMap wordMap, ArrayList listOfWords ) throws FileNotFoundException
+    {  
+        File output = new File("WordReport.txt");
+        if(output.exists())//if filename exists -> ask user about overwriting it
+            {
+                Scanner userInput = new Scanner( System.in );
+                System.out.println("File already exists");
+                System.out.println("Enter the NUMBER '1' to overwrite the file");
+                System.out.println("----------------------------------------");
+                String Input = userInput.next();
+                if (!"1".equals(Input))//if user doesn't enter 1
+                    {
+                        System.out.println("Remove/Rename the file in directory with same name try again");
+                        
+                    }
+                    else//green light to overwrite given by user
+                        {
+                            PrintWriter outWriter = new PrintWriter(output);                                 
+                            outWriter.println("Words -------------------------Count of Appearance In text");
+                            int x=0;
+                            Iterator<String> Parser = listOfWords.iterator();
+                            while(Parser.hasNext())
+                            {   
+                                String Word = Parser.next();//Next Word 
+                                String Appearance = wordMap.get(Word).toString();//count in text
+                                    outWriter.print(x+" : "+Word);
+                                    for(int n=0;n<(30 - Word.length());n++)
+                                            outWriter.print("-");
+                                    outWriter.print(" -> " + Appearance);                     
+                                    x++;//Counts Number of words
+                                    outWriter.println();//new line per word
+                            }
+                            outWriter.close();
+                        }
+            }
+            else 
+                { // create and write to the said filename;
+                    PrintWriter outWriter = new PrintWriter(output);
+                    outWriter.close();
+                }
+    }
+
+//-----------------------------------------------------------Printer function
+    /**
+     * 
+     * printer represents a function in the system that displays the hashmap 
+     *@param Words : takes in the hashmap of words to print them out
+     *@param listOfWord : ArrayList of the hash keys(words) in sorted order
+     * 
+     */
+    static void printer(HashMap Words, ArrayList listOfWords )
+    {
+        System.out.println("----------------------------------------");
+        for (int i = 0; i < listOfWords.size(); i++) 
+        {
+            String key = (String)listOfWords.get(i);//parse the sorted Arraylist of words
+            Integer count = (Integer)Words.get(key);//pick the count of the word specified from hashmap(O(n)=1)
+            System.out.println(key + "---------- " + count);//Displaying the word-count pairs per line
+        }
+        System.out.println("----------------------------------------");
+        //System.out.println(" arraylist size --> "+listOfWords.size());
+        //System.out.println(" Hasmap size size --> "+Words.size());
+    }  
+//---------------------------------------------------------------------MAIN()         
+    /**
+    *@param args[1] -command line argument[1] which would be name of sample document
+    *
+    *Here lies the main program
+    */
+    public static void main(String[] args) throws FileNotFoundException 
+    { 
+        File Filename = new File("Sample.txt");//args[1]);     
+        //pass file name to the method and get mapping of words to count of appearance 
+        HashMap wordMap = createHashMapofWords(Filename);
+        //creating sorted arraylist of the words
+        ArrayList listOfWords = new ArrayList(wordMap.keySet());
+        //and having it sorted alphabetically using collections.arraylist.sort 
+        Collections.sort(listOfWords);
+        //print to cosole
+        //printer(wordMap,listOfWords);
+        writeToTextFile(wordMap, listOfWords);
+
+     
+         //System.out.println("--------------END --------------------------");
+    }
+
+}
 
